@@ -52,9 +52,11 @@ public class JumpState : ICharacterState
     {
         Debug.Log("Enter Jump State");
         character.SetAnimation("Jump");
+    }
+    public void Update(Character character) 
+    {
         character.Jump();
     }
-    public void Update(Character character) { }
     public void Exit(Character character)
     {
         Debug.Log("Exit Jump State");

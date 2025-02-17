@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,18 @@ public class Character : MonoBehaviour
     public string characterName;
     public Animator animator;
     public Rigidbody2D rb;
+    public Transform rotate;
     public float speed = 5f;
     public float jumpForce = 7f;
+    float dirX;
+    [SerializeField]
+    public bool isGround;
+    public bool stateCompete;
+
+    private void Start()
+    {
+        rotate = gameObject.GetComponent<Transform>();
+    }
 
     public void SetState(ICharacterState newState)
     {
@@ -22,6 +33,7 @@ public class Character : MonoBehaviour
 
     void Update()
     {
+        dirX = Input.GetAxisRaw("Horizontal");
         currentState?.Update(this);
     }
 
@@ -33,17 +45,42 @@ public class Character : MonoBehaviour
 
     public void Idle()
     {
-        rb.velocity = new Vector2(0, 0);
+        Debug.Log(characterName + " is Idleing!");
+        rb.velocity = new Vector2(0, rb.velocity.y);
+        stateCompete = true;
     }
 
     public void Move()
     {
-        rb.velocity = new Vector2(speed, rb.velocity.y);
+        Debug.Log(characterName + " is Running!");
+        rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
+        stateCompete = true;
     }
 
     public void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        //isGround = false;
+        stateCompete = false;
+        if (isGround)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            isGround = false;
+        }
+        if (rb.velocity.y > .1f)
+        {
+            Debug.Log(characterName + " is jumping!");
+            SetAnimation("Jump");
+        }
+        else if (rb.velocity.y < -.1f)
+        {
+            Debug.Log(characterName + " is falling!");
+            SetAnimation("Fall");
+        }
+        else
+        {
+            //isGround = true;
+            stateCompete = true;
+        }
     }
 
     public void Attack()

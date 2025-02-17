@@ -45,26 +45,28 @@ public class InputHandler : MonoBehaviour
     private ICommand jumpCommand = new JumpCommand();
     private ICommand attackCommand = new AttackCommand();
 
-    bool can;
+    public float dirX;
+
     void Update()
     {
         Character currentCharacter = CharacterManager.Instance.GetCurrentCharacter();
+        dirX = Input.GetAxisRaw("Horizontal");
         if (Input.GetKey(KeyCode.A))
         {
-            can = false;
-            currentCharacter.speed = -5f;
+            //currentCharacter.speed = -5f;
+            currentCharacter.rotate.localScale = new Vector2(1, 1);
             runCommand.Execute(currentCharacter);
         }
-        else if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
-            can = false;
-            currentCharacter.speed = 5f;
+            //currentCharacter.speed = 5f;
+            currentCharacter.rotate.localScale = new Vector2(-1, 1);
             runCommand.Execute(currentCharacter);
         }
-        else
-        {
-            idleCommand.Execute(currentCharacter);
-        }
+        //else
+        //{
+        //    idleCommand.Execute(currentCharacter);
+        //}
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpCommand.Execute(currentCharacter);
