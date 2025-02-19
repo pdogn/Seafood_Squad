@@ -25,6 +25,7 @@ public class CharacterManager : MonoBehaviour
 
     public void SwitchCharacter()
     {
+        characters[currentIndex].SetState(new IdleState());
         currentIndex = (currentIndex + 1) % characters.Count;
         OnCharacterSwitch?.Invoke(GetCurrentCharacter());
     }

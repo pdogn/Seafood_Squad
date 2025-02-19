@@ -17,7 +17,7 @@ public class Character : MonoBehaviour
     public Transform groundCheck;
     public bool isGrounded;
     public bool hasJumped;
-    public bool stateCompeted;
+    public bool wasGrounded;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckRadius = 0.2f;
 
@@ -39,17 +39,38 @@ public class Character : MonoBehaviour
     {
         dirX = Input.GetAxisRaw("Horizontal");
         currentState?.Update(this);
-    }
-
-    private void FixedUpdate()
-    {
         GroundCheck();
     }
+
+    private void LateUpdate()
+    {
+        //UpdatePhysic();
+    }
+
 
     public void SetAnimation(string animationName)
     {
         if (animator != null)
             animator.Play(animationName);
+    }
+
+    public void UpdatePhysic()
+    {
+        dirX = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
+        if (dirX > 0)
+        {
+            this.rotate.localScale = new Vector2(-1, 1);
+        }
+        else if (dirX < 0)
+        {
+            this.rotate.localScale = new Vector2(1, 1);
+        }
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            hasJumped = true;
+        }
     }
 
     public void Idle()
@@ -60,7 +81,7 @@ public class Character : MonoBehaviour
     public void Move()
     {
         Debug.Log(characterName + " is Running!");
-        rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
+        //rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
         if(dirX > 0)
         {
             this.rotate.localScale = new Vector2(-1, 1);
@@ -77,29 +98,19 @@ public class Character : MonoBehaviour
 
     public void Jump()
     {
-        //isGround = false;
-        if (hasJumped == false)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            hasJumped = true;
-        }
         if (rb.velocity.y > .1f)
         {
             Debug.Log(characterName + " is jumping!");
             SetAnimation("Jump");
         }
-        else if (rb.velocity.y < -.1f)
-        {
-            Debug.Log(characterName + " is falling!");
-            SetAnimation("Fall");
-        }
+        
         //kiểm tra khi hoàn thành 1 lần nhảy
-        if(hasJumped && isGrounded)
-        {
-            SetState(new IdleState());
-            hasJumped = false;
-            //SetState(new IdleState());
-        }
+        //if(hasJumped && isGrounded)
+        //{
+        //    SetState(new IdleState());
+        //    hasJumped = false;
+        //    //SetState(new IdleState());
+        //}
     }
 
     public void Attack()
@@ -109,11 +120,23 @@ public class Character : MonoBehaviour
 
     void GroundCheck()
     {
+        wasGrounded = isGrounded;//lưu trạng thái trước đó
         isGrounded = false;
         Collider2D[] coliders = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius);
         if(coliders.Length > 1)
         {
             isGrounded = true;
+        }
+        if(!wasGrounded && isGrounded && hasJumped)
+        {
+            //nhân vật tiếp đất sau khi nhảy
+            hasJumped = false;
+            SetState(new IdleState());
+        }
+        if(!isGrounded && rb.velocity.y < .1f)
+        {
+            hasJumped = true;
+            SetAnimation("Fall");
         }
     }
 }

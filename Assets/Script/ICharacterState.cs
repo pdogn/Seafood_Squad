@@ -22,10 +22,12 @@ public class IdleState : ICharacterState
     public void Update(Character character) 
     { 
         character.Idle();
+        //character.UpdatePhysic();
     }
     public void Exit(Character character)
     {
         Debug.Log("Exit Idle State");
+        character.UpdatePhysic();
     }
 }
 
@@ -35,16 +37,15 @@ public class RunState : ICharacterState
     {
         Debug.Log("Enter Run State"); 
         character.SetAnimation("Run");
-        character.stateCompeted = false;
     }
     public void Update(Character character)
     {
         character.Move();
+        character.UpdatePhysic();
     }
     public void Exit(Character character)
     {
         Debug.Log("Exit Run State");
-        character.stateCompeted = true;
     }
 }
 
@@ -54,16 +55,15 @@ public class JumpState : ICharacterState
     {
         Debug.Log("Enter Jump State");
         character.SetAnimation("Jump");
-        character.stateCompeted = false;
     }
     public void Update(Character character) 
     {
         character.Jump();
+        character.UpdatePhysic();
     }
     public void Exit(Character character)
     {
         Debug.Log("Exit Jump State");
-        character.stateCompeted = true;
     }
 }
 
