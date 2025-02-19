@@ -17,6 +17,7 @@ public class Character : MonoBehaviour
     public Transform groundCheck;
     public bool isGrounded;
     public bool hasJumped;
+    public bool stateCompeted;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckRadius = 0.2f;
 
@@ -54,24 +55,34 @@ public class Character : MonoBehaviour
     public void Idle()
     {
         Debug.Log(characterName + " is Idleing!");
-        rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
     public void Move()
     {
         Debug.Log(characterName + " is Running!");
         rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
+        if(dirX > 0)
+        {
+            this.rotate.localScale = new Vector2(-1, 1);
+        }
+        else if (dirX < 0)
+        {
+            this.rotate.localScale = new Vector2(1, 1);
+        }
+        else
+        {
+            SetState(new IdleState());
+        }
     }
 
     public void Jump()
     {
         //isGround = false;
-        if (isGrounded && hasJumped == false)
+        if (hasJumped == false)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            isGrounded = false;
+            hasJumped = true;
         }
-        hasJumped = true;
         if (rb.velocity.y > .1f)
         {
             Debug.Log(characterName + " is jumping!");
@@ -85,8 +96,9 @@ public class Character : MonoBehaviour
         //kiểm tra khi hoàn thành 1 lần nhảy
         if(hasJumped && isGrounded)
         {
-            hasJumped = false;
             SetState(new IdleState());
+            hasJumped = false;
+            //SetState(new IdleState());
         }
     }
 

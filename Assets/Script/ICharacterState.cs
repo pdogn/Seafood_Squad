@@ -35,6 +35,7 @@ public class RunState : ICharacterState
     {
         Debug.Log("Enter Run State"); 
         character.SetAnimation("Run");
+        character.stateCompeted = false;
     }
     public void Update(Character character)
     {
@@ -43,6 +44,7 @@ public class RunState : ICharacterState
     public void Exit(Character character)
     {
         Debug.Log("Exit Run State");
+        character.stateCompeted = true;
     }
 }
 
@@ -52,6 +54,7 @@ public class JumpState : ICharacterState
     {
         Debug.Log("Enter Jump State");
         character.SetAnimation("Jump");
+        character.stateCompeted = false;
     }
     public void Update(Character character) 
     {
@@ -60,6 +63,7 @@ public class JumpState : ICharacterState
     public void Exit(Character character)
     {
         Debug.Log("Exit Jump State");
+        character.stateCompeted = true;
     }
 }
 

@@ -51,16 +51,17 @@ public class InputHandler : MonoBehaviour
     {
         Character currentCharacter = CharacterManager.Instance.GetCurrentCharacter();
         dirX = Input.GetAxisRaw("Horizontal");
+        //if (!currentCharacter.stateCompeted) return;
         if (Input.GetKey(KeyCode.A))
         {
             //currentCharacter.speed = -5f;
-            currentCharacter.rotate.localScale = new Vector2(1, 1);
+            //currentCharacter.rotate.localScale = new Vector2(1, 1);
             runCommand.Execute(currentCharacter);
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             //currentCharacter.speed = 5f;
-            currentCharacter.rotate.localScale = new Vector2(-1, 1);
+            //currentCharacter.rotate.localScale = new Vector2(-1, 1);
             runCommand.Execute(currentCharacter);
         }
         //else
