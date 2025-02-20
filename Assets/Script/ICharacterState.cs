@@ -17,7 +17,7 @@ public class IdleState : ICharacterState
     public void Enter(Character character)
     {
         Debug.Log("Enter Idle State");
-        character.SetAnimation("Idle");
+        character.SetAnimation("Idle");    
     }
     public void Update(Character character) 
     { 
@@ -79,5 +79,44 @@ public class AttackState : ICharacterState
     public void Exit(Character character)
     {
         Debug.Log("Exit Attack State");
+    }
+}
+
+public class DeathGroundState : ICharacterState
+{
+    public void Enter(Character character)
+    {
+        
+    }
+    public void Update(Character character) { }
+    public void Exit(Character character)
+    {
+        Debug.Log("Exit Deatd State");
+    }
+}
+
+public class DeathSkeletonFishState : ICharacterState
+{
+    public void Enter(Character character)
+    {
+
+    }
+    public void Update(Character character) { }
+    public void Exit(Character character)
+    {
+        Debug.Log("Exit DeatdSkeletonFish State");
+    }
+}
+
+public class DeathBubbleState : ICharacterState
+{
+    public void Enter(Character character)
+    {
+
+    }
+    public void Update(Character character) { }
+    public void Exit(Character character)
+    {
+        Debug.Log("Exit DeatdSkeletonFish State");
     }
 }

@@ -40,7 +40,7 @@ public class AttackCommand : ICommand
 }
 public class InputHandler : MonoBehaviour
 {
-    private ICommand idleCommand = new IdleCommand();
+    //private ICommand idleCommand = new IdleCommand();
     private ICommand runCommand = new RunCommand();
     private ICommand jumpCommand = new JumpCommand();
     private ICommand attackCommand = new AttackCommand();
