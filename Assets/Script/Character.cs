@@ -6,12 +6,18 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     private ICharacterState currentState;
-    public string characterName;
-    public Animator animator;
-    public Rigidbody2D rb;
-    public Transform rotate;
-    public float speed = 5f;
-    public float jumpForce = 7f;
+    [SerializeField]
+    private string characterName;
+    [SerializeField]
+    private Animator animator;
+    [SerializeField]
+    private Rigidbody2D rb;
+    [SerializeField]
+    private Transform rotate;
+    [SerializeField]
+    private float speed = 5f;
+    [SerializeField]
+    private float jumpForce = 7f;
     float dirX;
     [SerializeField]
     public Transform groundCheck;
@@ -21,8 +27,10 @@ public class Character : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckRadius = 0.2f;
 
-    private void Start()
+    public virtual void Start()
     {
+        animator = gameObject.GetComponent<Animator>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
         rotate = gameObject.GetComponent<Transform>();
     }
 
@@ -41,12 +49,6 @@ public class Character : MonoBehaviour
         currentState?.Update(this);
         GroundCheck();
     }
-
-    private void LateUpdate()
-    {
-        //UpdatePhysic();
-    }
-
 
     public void SetAnimation(string animationName)
     {
@@ -72,12 +74,17 @@ public class Character : MonoBehaviour
             hasJumped = true;
         }
     }
+    public void UpdateLogic()
+    {
+
+    }
 
     public void Idle()
     {
         Debug.Log(characterName + " is Idleing!");
     }
 
+    //di chuyển
     public void Move()
     {
         Debug.Log(characterName + " is Running!");
@@ -96,6 +103,7 @@ public class Character : MonoBehaviour
         }
     }
 
+    //Nhảy
     public void Jump()
     {
         if (rb.velocity.y > .1f)
@@ -103,24 +111,22 @@ public class Character : MonoBehaviour
             Debug.Log(characterName + " is jumping!");
             SetAnimation("Jump");
         }
-        
-        //kiểm tra khi hoàn thành 1 lần nhảy
-        //if(hasJumped && isGrounded)
-        //{
-        //    SetState(new IdleState());
-        //    hasJumped = false;
-        //    //SetState(new IdleState());
-        //}
     }
 
-    public void Attack()
+    //Tấn công
+    public virtual void Attack()
     {
         Debug.Log(characterName + " is Attacking!");
     }
-
-    void GroundCheck()
+    public virtual void GetDamage()
     {
-        wasGrounded = isGrounded;//lưu trạng thái trước đó
+        Debug.Log(characterName + " was Attacked");
+    }
+
+    private void GroundCheck()
+    {
+        //lưu trạng thái trước đó
+        wasGrounded = isGrounded;
         isGrounded = false;
         Collider2D[] coliders = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius);
         if(coliders.Length > 1)
@@ -135,6 +141,7 @@ public class Character : MonoBehaviour
         }
         if(!isGrounded && rb.velocity.y < .1f)
         {
+            //khi nhân vật đang rơi
             hasJumped = true;
             SetAnimation("Fall");
         }

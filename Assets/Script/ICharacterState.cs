@@ -86,7 +86,7 @@ public class DeathGroundState : ICharacterState
 {
     public void Enter(Character character)
     {
-        
+        character.SetAnimation("Death");
     }
     public void Update(Character character) { }
     public void Exit(Character character)
@@ -99,7 +99,7 @@ public class DeathSkeletonFishState : ICharacterState
 {
     public void Enter(Character character)
     {
-
+        character.SetAnimation("DeathSkeletonFish");
     }
     public void Update(Character character) { }
     public void Exit(Character character)
@@ -112,7 +112,7 @@ public class DeathBubbleState : ICharacterState
 {
     public void Enter(Character character)
     {
-
+        character.SetAnimation("DeathBubbleState");
     }
     public void Update(Character character) { }
     public void Exit(Character character)

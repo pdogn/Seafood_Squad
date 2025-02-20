@@ -275,9 +275,9 @@ GameObject:
   m_Component:
   - component: {fileID: 543162822}
   - component: {fileID: 543162821}
-  - component: {fileID: 543162823}
   - component: {fileID: 543162824}
   - component: {fileID: 543162825}
+  - component: {fileID: 543162827}
   - component: {fileID: 543162826}
   m_Layer: 8
   m_Name: Pierce Tooth
@@ -354,32 +354,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &543162823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543162820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e8058c8e5c69e46afe4d0ec06fd74f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: player1
-  animator: {fileID: 543162826}
-  rb: {fileID: 543162825}
-  rotate: {fileID: 0}
-  speed: 5
-  jumpForce: 20
-  groundCheck: {fileID: 77398667}
-  isGrounded: 1
-  hasJumped: 0
-  wasGrounded: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  groundCheckRadius: 0.2
 --- !u!61 &543162824
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -448,6 +422,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &543162827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543162820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db3e35c2ae2d6d04e97da7a9191dfc1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: PierceTooth
+  animator: {fileID: 543162826}
+  rb: {fileID: 543162825}
+  rotate: {fileID: 543162822}
+  speed: 5
+  jumpForce: 7
+  groundCheck: {fileID: 77398667}
+  isGrounded: 0
+  hasJumped: 0
+  wasGrounded: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckRadius: 0.2
 --- !u!1 &625983158
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,9 +458,9 @@ GameObject:
   m_Component:
   - component: {fileID: 625983160}
   - component: {fileID: 625983164}
-  - component: {fileID: 625983159}
   - component: {fileID: 625983163}
   - component: {fileID: 625983161}
+  - component: {fileID: 625983166}
   - component: {fileID: 625983165}
   m_Layer: 8
   m_Name: Pink Star
@@ -469,32 +469,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &625983159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 625983158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e8058c8e5c69e46afe4d0ec06fd74f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: player1
-  animator: {fileID: 625983165}
-  rb: {fileID: 625983161}
-  rotate: {fileID: 0}
-  speed: 5
-  jumpForce: 20
-  groundCheck: {fileID: 1216582347}
-  isGrounded: 1
-  hasJumped: 0
-  wasGrounded: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  groundCheckRadius: 0.2
 --- !u!4 &625983160
 Transform:
   m_ObjectHideFlags: 0
@@ -631,6 +605,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &625983166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625983158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883d9fa7e96eafb47aa227e0fb50c0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Pink Star
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  rotate: {fileID: 0}
+  speed: 5
+  jumpForce: 7
+  groundCheck: {fileID: 1216582347}
+  isGrounded: 0
+  hasJumped: 0
+  wasGrounded: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckRadius: 0.2
 --- !u!1 &919372673
 GameObject:
   m_ObjectHideFlags: 0
@@ -9998,9 +9998,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1714275952}
   - component: {fileID: 1714275956}
-  - component: {fileID: 1714275951}
   - component: {fileID: 1714275955}
   - component: {fileID: 1714275953}
+  - component: {fileID: 1714275958}
   - component: {fileID: 1714275957}
   m_Layer: 8
   m_Name: Cabby
@@ -10009,32 +10009,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1714275951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1714275950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e8058c8e5c69e46afe4d0ec06fd74f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: player1
-  animator: {fileID: 1714275957}
-  rb: {fileID: 1714275953}
-  rotate: {fileID: 0}
-  speed: 5
-  jumpForce: 20
-  groundCheck: {fileID: 943140621}
-  isGrounded: 1
-  hasJumped: 0
-  wasGrounded: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  groundCheckRadius: 0.2
 --- !u!4 &1714275952
 Transform:
   m_ObjectHideFlags: 0
@@ -10171,6 +10145,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1714275958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714275950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e8d0747c67a504d84f694d2de7a0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Cabby
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  rotate: {fileID: 0}
+  speed: 5
+  jumpForce: 7
+  groundCheck: {fileID: 943140621}
+  isGrounded: 0
+  hasJumped: 0
+  wasGrounded: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckRadius: 0.2
 --- !u!1 &1928467389
 GameObject:
   m_ObjectHideFlags: 0
@@ -10260,6 +10260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characters:
-  - {fileID: 543162823}
-  - {fileID: 1714275951}
-  - {fileID: 625983159}
+  - {fileID: 543162827}
+  - {fileID: 1714275958}
+  - {fileID: 625983166}
