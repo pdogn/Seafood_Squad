@@ -8,10 +8,44 @@ public class PierceTooth : Character
     private ICommand deathSkeletonFishCommand = new DeathSkeletonFishCommand();
     private ICommand deathBubbleCommand = new DeathBubbleCommand();
 
+    [SerializeField] Transform attackArea;
+
+    public override void Start()
+    {
+        base.Start();
+        canAttack = true;
+    }
+
     public override void Attack()
     {
-        Debug.Log("đánh bay");
+        if (IsAnimationFinished("Attack"))
+        {
+            attackStateComplete = true;
+            SetState(new IdleState());
+        }
+        else
+        {
+            attackStateComplete = false;
+        }
+        
+        if (canAttack)
+        {
+            Debug.Log("đánh bay");
+
+            attackArea.gameObject.SetActive(true);
+            canAttack = false;
+            timeAtk = delayAttack;
+            attackArea.gameObject.SetActive(true);
+        }
+        
     }
+
+    //bool IsAnimationFinished(string animationName)
+    //{
+    //    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+    //    return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1.0f;
+    //}
+
 
     public override void GetDamage()
     {

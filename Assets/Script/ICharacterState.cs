@@ -73,9 +73,12 @@ public class AttackState : ICharacterState
     {
         Debug.Log("Enter Attack State");
         character.SetAnimation("Attack");
+        //character.Attack();
+    }
+    public void Update(Character character) 
+    {
         character.Attack();
     }
-    public void Update(Character character) { }
     public void Exit(Character character)
     {
         Debug.Log("Exit Attack State");

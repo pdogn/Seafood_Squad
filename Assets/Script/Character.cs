@@ -9,11 +9,16 @@ public class Character : MonoBehaviour
     [SerializeField]
     private string characterName;
     [SerializeField]
-    private Animator animator;
+    public Animator animator;
     [SerializeField]
     private Rigidbody2D rb;
     [SerializeField]
     private Transform rotate;
+    public Transform GetRotate {
+        get { return rotate; }
+        private set { rotate = value; }     
+    }
+
     [SerializeField]
     private float speed = 5f;
     [SerializeField]
@@ -27,6 +32,11 @@ public class Character : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckRadius = 0.2f;
 
+    public bool canAttack;
+    public float delayAttack = 0.5f;
+    public float timeAtk = .5f;
+
+    public bool attackStateComplete;
     public virtual void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -48,6 +58,7 @@ public class Character : MonoBehaviour
         dirX = Input.GetAxisRaw("Horizontal");
         currentState?.Update(this);
         GroundCheck();
+        AttackCheck();
     }
 
     public void SetAnimation(string animationName)
@@ -106,7 +117,7 @@ public class Character : MonoBehaviour
     //Nhảy
     public void Jump()
     {
-        if (rb.velocity.y > .1f)
+        if (rb.velocity.y > .1f && attackStateComplete)
         {
             Debug.Log(characterName + " is jumping!");
             SetAnimation("Jump");
@@ -138,12 +149,31 @@ public class Character : MonoBehaviour
             //nhân vật tiếp đất sau khi nhảy
             hasJumped = false;
             SetState(new IdleState());
+            attackStateComplete = true;
         }
-        if(!isGrounded && rb.velocity.y < .1f)
+        if(!isGrounded && rb.velocity.y < .1f && attackStateComplete)
         {
             //khi nhân vật đang rơi
             hasJumped = true;
             SetAnimation("Fall");
         }
+    }
+
+    private void AttackCheck()
+    {
+        if(timeAtk >= 0)
+        {
+            timeAtk -= Time.deltaTime;
+        }
+        else
+        {
+            canAttack = true;
+        }
+    }
+
+    public bool IsAnimationFinished(string animationName)
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1.0f;
     }
 }

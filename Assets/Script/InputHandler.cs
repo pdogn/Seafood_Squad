@@ -24,7 +24,7 @@ public class InputHandler : MonoBehaviour
         //{
         //    idleCommand.Execute(currentCharacter);
         //}
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && currentCharacter.attackStateComplete && !currentCharacter.hasJumped)
         {
             jumpCommand.Execute(currentCharacter);
         }
