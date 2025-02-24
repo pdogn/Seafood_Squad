@@ -25,26 +25,27 @@ public class Character : MonoBehaviour
     private float jumpForce = 7f;
     public float dirX;//
     [SerializeField]
-    public Transform groundCheck;
+    private Transform groundCheck;
     public bool isGrounded;//
-    public bool hasJumped;
-    public bool wasGrounded;
-    [SerializeField] LayerMask groundLayer;
-    [SerializeField] float groundCheckRadius = 0.8f;
+    //public bool hasJumped;
+    //public bool wasGrounded;
+    //[SerializeField] LayerMask groundLayer;
+    [SerializeField] Vector2 SizeCheckBox;
 
     public bool canAttack;
-    public float delayAttack = 0.5f;
+    protected float delayAttack = 0.5f;
     public float timeAtk = .5f;
 
     public bool isDie;
     public bool isUsing;
 
     public bool attackStateComplete;
-    public virtual void Start()
+    private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         rotate = gameObject.GetComponent<Transform>();
+        InitState();
     }
 
     public void SetState(ICharacterState newState)
@@ -56,9 +57,15 @@ public class Character : MonoBehaviour
         currentState.Enter(this);
     }
 
-    void Update()
+    void InitState()
     {
-        //dirX = Input.GetAxisRaw("Horizontal");
+        this.SetState(new IdleState());
+    }
+
+    private void Update()
+    {
+        if (!isUsing || isDie) return;
+        dirX = Input.GetAxisRaw("Horizontal");
         currentState?.Update(this);
         GroundCheck();
         AttackCheck();
@@ -78,7 +85,7 @@ public class Character : MonoBehaviour
 
     public void UpdatePhysic()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
+        //dirX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
         if (dirX > 0)
         {
@@ -91,7 +98,7 @@ public class Character : MonoBehaviour
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            hasJumped = true;
+            //hasJumped = true;
         }
     }
     public void UpdateLogic()
@@ -108,35 +115,12 @@ public class Character : MonoBehaviour
     public void Move()
     {
         Debug.Log(characterName + " is Running!");
-        //rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
-        if(dirX > 0)
-        {
-            this.rotate.localScale = new Vector2(-1, 1);
-        }
-        else if (dirX < 0)
-        {
-            this.rotate.localScale = new Vector2(1, 1);
-        }
-        else
-        {
-            SetState(new IdleState());
-        }
     }
 
     //Nhảy
-    public void Jump()
+    public virtual void Jump()
     {
-        if (rb.velocity.y > .1f && attackStateComplete)
-        {
-            Debug.Log(characterName + " is jumping!");
-            SetAnimation("Jump");
-        }
-        if(!isGrounded && rb.velocity.y < .1f && attackStateComplete)
-        {
-            //khi nhân vật đang rơi
-            hasJumped = true;
-            SetAnimation("Fall");
-        }
+        Debug.Log(characterName + " is Jumpping!");
     }
 
     //Tấn công
@@ -144,30 +128,16 @@ public class Character : MonoBehaviour
     {
         Debug.Log(characterName + " is Attacking!");
     }
-    public virtual void GetDamage()
-    {
-        Debug.Log(characterName + " was Attacked");
-    }
 
     private void GroundCheck()
     {
-        //lưu trạng thái trước đó
-        wasGrounded = isGrounded;
         isGrounded = false;
-        Vector2 sizeBox = new Vector2(groundCheckRadius, .2f);
+        Vector2 sizeBox = SizeCheckBox;
         Collider2D[] coliders = Physics2D.OverlapBoxAll(groundCheck.position, sizeBox, 0f);
         if(coliders.Length > 1)
         {
             isGrounded = true;
         }
-        if(!wasGrounded && isGrounded && hasJumped)
-        {
-            //nhân vật tiếp đất sau khi nhảy
-            hasJumped = false;
-            SetState(new IdleState());
-            //attackStateComplete = true;
-        }
-       
     }
 
     private void AttackCheck()

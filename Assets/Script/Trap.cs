@@ -7,12 +7,15 @@ public class Trap : DangerousObject
     [SerializeField]
     private float force = 4f;
 
-    public override void TakeDamage(Collider2D collision)
+    protected override void TakeDamage(Collider2D collision)
     {
-        Rigidbody2D rb_char = collision.gameObject.GetComponent<Rigidbody2D>();
-        collision.gameObject.GetComponent<Character>().SetAnimation("Death");
-        Vector2 vel = rb_char.velocity;
-        vel.y = force;
-        rb_char.AddForce(vel);
+        Character player = collision.gameObject.GetComponent<Character>();
+        if (player.isDie == false)
+        {
+            player.dirX = 0;
+            player.isDie = true;
+            player.rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+        }
+        player.SetState(new DeathGroundState());
     }
 }

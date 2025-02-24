@@ -23,16 +23,26 @@ public class IdleState : ICharacterState
         character.SetAnimation("Idle");    
     }
     public void Update(Character character) 
-    { 
+    {
         character.Idle();
         //character.UpdatePhysic();
         Updatelogic(character);
     }
     public void Updatelogic(Character character)
     {
-        if(character.dirX != 0)
+        if (character.isGrounded)
         {
-            character.SetState(new RunState());
+            if (character.dirX != 0)
+            {
+                character.SetState(new RunState());
+            }
+        }
+        else
+        {
+            if (character.rb.velocity.y > .1f)
+            {
+                character.SetState(new JumpState());
+            }
         }
     }
     public void Exit(Character character)
@@ -95,9 +105,16 @@ public class JumpState : ICharacterState
 
     public void Updatelogic(Character character)
     {
-        if(character.rb.velocity.y < .1f && character.attackStateComplete)
+        if (character.isGrounded)
         {
-            character.SetAnimation("Fall");
+            character.SetState(new IdleState());
+        }
+        else
+        {
+             if (character.rb.velocity.y < .1f && character.attackStateComplete)
+            {
+                character.SetAnimation("Fall");
+            }
         }
     }
 
@@ -128,7 +145,20 @@ public class AttackState : ICharacterState
     }
     public void Updatelogic(Character character)
     {
-        
+        if (character.isGrounded)
+        {
+            if (character.attackStateComplete)
+            {
+                character.SetState(new IdleState());
+            }
+        }
+        else
+        {
+            if (character.attackStateComplete)
+            {
+                character.SetState(new JumpState());
+            }
+        }
     }
 }
 

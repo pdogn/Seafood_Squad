@@ -4,33 +4,28 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    //private ICommand idleCommand = new IdleCommand();
-    private ICommand runCommand = new RunCommand();
-    private ICommand jumpCommand = new JumpCommand();
-    private ICommand attackCommand = new AttackCommand();
-
     void Update()
     {
         Character currentCharacter = CharacterManager.Instance.GetCurrentCharacter();
-        if (Input.GetKey(KeyCode.A) && currentCharacter.hasJumped ==false)
-        {
-            runCommand.Execute(currentCharacter);
-        }
-        else if (Input.GetKey(KeyCode.D) && currentCharacter.hasJumped == false)
-        {
-            runCommand.Execute(currentCharacter);
-        }
-        //if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && currentCharacter.hasJumped == false)
+        //if (Input.GetKey(KeyCode.A) && currentCharacter.hasJumped ==false)
         //{
-        //    idleCommand.Execute(currentCharacter);
+        //    runCommand.Execute(currentCharacter);
         //}
-        if (Input.GetKeyDown(KeyCode.Space) && currentCharacter.attackStateComplete && !currentCharacter.hasJumped)
+        //else if (Input.GetKey(KeyCode.D) && currentCharacter.hasJumped == false)
+        //{
+        //    runCommand.Execute(currentCharacter);
+        //}
+        ////if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && currentCharacter.hasJumped == false)
+        ////{
+        ////    idleCommand.Execute(currentCharacter);
+        ////}
+        //if (Input.GetKeyDown(KeyCode.Space) && currentCharacter.attackStateComplete && !currentCharacter.hasJumped)
+        //{
+        //    jumpCommand.Execute(currentCharacter);
+        //}
+        if (Input.GetKeyDown(KeyCode.F) && currentCharacter.canAttack)
         {
-            jumpCommand.Execute(currentCharacter);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            attackCommand.Execute(currentCharacter);
+            currentCharacter.SetState(new AttackState());
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
