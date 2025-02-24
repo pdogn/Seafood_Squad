@@ -11,7 +11,7 @@ public class Character : MonoBehaviour
     [SerializeField]
     public Animator animator;
     [SerializeField]
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     [SerializeField]
     private Transform rotate;
     public Transform GetRotate {
@@ -23,18 +23,21 @@ public class Character : MonoBehaviour
     private float speed = 5f;
     [SerializeField]
     private float jumpForce = 7f;
-    float dirX;
+    public float dirX;//
     [SerializeField]
     public Transform groundCheck;
-    public bool isGrounded;
+    public bool isGrounded;//
     public bool hasJumped;
     public bool wasGrounded;
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] float groundCheckRadius = 0.2f;
+    [SerializeField] float groundCheckRadius = 0.8f;
 
     public bool canAttack;
     public float delayAttack = 0.5f;
     public float timeAtk = .5f;
+
+    public bool isDie;
+    public bool isUsing;
 
     public bool attackStateComplete;
     public virtual void Start()
@@ -55,10 +58,16 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
+        //dirX = Input.GetAxisRaw("Horizontal");
         currentState?.Update(this);
         GroundCheck();
         AttackCheck();
+    }
+
+    private void LateUpdate()
+    {
+        if (!isUsing) return;
+        UpdatePhysic();
     }
 
     public void SetAnimation(string animationName)
@@ -122,6 +131,12 @@ public class Character : MonoBehaviour
             Debug.Log(characterName + " is jumping!");
             SetAnimation("Jump");
         }
+        if(!isGrounded && rb.velocity.y < .1f && attackStateComplete)
+        {
+            //khi nhân vật đang rơi
+            hasJumped = true;
+            SetAnimation("Fall");
+        }
     }
 
     //Tấn công
@@ -139,7 +154,8 @@ public class Character : MonoBehaviour
         //lưu trạng thái trước đó
         wasGrounded = isGrounded;
         isGrounded = false;
-        Collider2D[] coliders = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius);
+        Vector2 sizeBox = new Vector2(groundCheckRadius, .2f);
+        Collider2D[] coliders = Physics2D.OverlapBoxAll(groundCheck.position, sizeBox, 0f);
         if(coliders.Length > 1)
         {
             isGrounded = true;
@@ -149,14 +165,9 @@ public class Character : MonoBehaviour
             //nhân vật tiếp đất sau khi nhảy
             hasJumped = false;
             SetState(new IdleState());
-            attackStateComplete = true;
+            //attackStateComplete = true;
         }
-        if(!isGrounded && rb.velocity.y < .1f && attackStateComplete)
-        {
-            //khi nhân vật đang rơi
-            hasJumped = true;
-            SetAnimation("Fall");
-        }
+       
     }
 
     private void AttackCheck()

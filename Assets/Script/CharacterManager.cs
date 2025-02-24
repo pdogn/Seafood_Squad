@@ -20,12 +20,19 @@ public class CharacterManager : MonoBehaviour
 
     public Character GetCurrentCharacter()
     {
+        characters[currentIndex].isUsing = true;
         return characters[currentIndex];
     }
 
     public void SwitchCharacter()
     {
-        characters[currentIndex].SetState(new IdleState());
+        //charater truoc khi switch
+        if (!characters[currentIndex].isDie)
+        {
+            characters[currentIndex].SetState(new IdleState());
+            characters[currentIndex].isUsing = false;
+        }
+        //switch
         currentIndex = (currentIndex + 1) % characters.Count;
         OnCharacterSwitch?.Invoke(GetCurrentCharacter());
     }

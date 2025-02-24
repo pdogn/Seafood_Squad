@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public interface ICharacterState
     void Enter(Character character);
     void Update(Character character);
     void Exit(Character character);
+
+    void Updatelogic(Character character);
 }
 
 public class IdleState : ICharacterState
@@ -23,11 +26,19 @@ public class IdleState : ICharacterState
     { 
         character.Idle();
         //character.UpdatePhysic();
+        Updatelogic(character);
+    }
+    public void Updatelogic(Character character)
+    {
+        if(character.dirX != 0)
+        {
+            character.SetState(new RunState());
+        }
     }
     public void Exit(Character character)
     {
         Debug.Log("Exit Idle State");
-        character.UpdatePhysic();
+        //character.UpdatePhysic();
     }
 }
 
@@ -41,8 +52,27 @@ public class RunState : ICharacterState
     public void Update(Character character)
     {
         character.Move();
-        character.UpdatePhysic();
+        //character.UpdatePhysic();
+        Updatelogic(character);
     }
+    public void Updatelogic(Character character)
+    {
+        if (character.isGrounded)
+        {
+            if (character.dirX == 0)
+            {
+                character.SetState(new IdleState());
+            }
+        }
+        else
+        {
+            if(character.rb.velocity.y > .1f)
+            {
+                character.SetState(new JumpState());
+            }
+        }
+    }
+
     public void Exit(Character character)
     {
         Debug.Log("Exit Run State");
@@ -59,8 +89,18 @@ public class JumpState : ICharacterState
     public void Update(Character character) 
     {
         character.Jump();
-        character.UpdatePhysic();
+        //character.UpdatePhysic();
+        Updatelogic(character);
     }
+
+    public void Updatelogic(Character character)
+    {
+        if(character.rb.velocity.y < .1f && character.attackStateComplete)
+        {
+            character.SetAnimation("Fall");
+        }
+    }
+
     public void Exit(Character character)
     {
         Debug.Log("Exit Jump State");
@@ -78,10 +118,17 @@ public class AttackState : ICharacterState
     public void Update(Character character) 
     {
         character.Attack();
+        Updatelogic(character);
     }
+
+
     public void Exit(Character character)
     {
         Debug.Log("Exit Attack State");
+    }
+    public void Updatelogic(Character character)
+    {
+        
     }
 }
 
@@ -96,6 +143,10 @@ public class DeathGroundState : ICharacterState
     {
         Debug.Log("Exit Deatd State");
     }
+    public void Updatelogic(Character character)
+    {
+
+    }
 }
 
 public class DeathSkeletonFishState : ICharacterState
@@ -109,6 +160,10 @@ public class DeathSkeletonFishState : ICharacterState
     {
         Debug.Log("Exit DeatdSkeletonFish State");
     }
+    public void Updatelogic(Character character)
+    {
+
+    }
 }
 
 public class DeathBubbleState : ICharacterState
@@ -121,5 +176,9 @@ public class DeathBubbleState : ICharacterState
     public void Exit(Character character)
     {
         Debug.Log("Exit DeatdSkeletonFish State");
+    }
+    public void Updatelogic(Character character)
+    {
+
     }
 }
