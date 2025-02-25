@@ -11,7 +11,7 @@ public abstract class DangerousObject : MonoBehaviour
     //public float initflyForce = 5f;
     //public float flyForce = 5f;
 
-    private void Start()
+    protected virtual void Start()
     {
         //if (!flyObject) return;
         //Fly(flyForce);
@@ -25,11 +25,11 @@ public abstract class DangerousObject : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
-        {
-            TakeDamage(collision);
-            //impact = true;
-        }
+        //if (collision.tag == "Player")
+        //{
+        //    TakeDamage(collision);
+        //    impact = true;
+        //}
     }
 
     protected virtual void OnTriggerExit2D(Collider2D collision)

@@ -23,7 +23,7 @@ public class InputHandler : MonoBehaviour
         //{
         //    jumpCommand.Execute(currentCharacter);
         //}
-        if (Input.GetKeyDown(KeyCode.F) && currentCharacter.canAttack)
+        if (Input.GetKeyDown(KeyCode.F) && currentCharacter.canAttack && !currentCharacter.isDie)
         {
             currentCharacter.SetState(new AttackState());
         }

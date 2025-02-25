@@ -64,8 +64,8 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if (!isUsing || isDie) return;
         dirX = Input.GetAxisRaw("Horizontal");
+        if (!isUsing || isDie) return;
         currentState?.Update(this);
         GroundCheck();
         AttackCheck();
@@ -73,7 +73,7 @@ public class Character : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isUsing) return;
+        if (!isUsing || isDie) return;
         UpdatePhysic();
     }
 
@@ -85,8 +85,19 @@ public class Character : MonoBehaviour
 
     public void UpdatePhysic()
     {
-        //dirX = Input.GetAxisRaw("Horizontal");
+        Flip();
+
         rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
+
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            //hasJumped = true;
+        }
+    }
+
+    void Flip()
+    {
         if (dirX > 0)
         {
             this.rotate.localScale = new Vector2(-1, 1);
@@ -94,11 +105,6 @@ public class Character : MonoBehaviour
         else if (dirX < 0)
         {
             this.rotate.localScale = new Vector2(1, 1);
-        }
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            //hasJumped = true;
         }
     }
     public void UpdateLogic()

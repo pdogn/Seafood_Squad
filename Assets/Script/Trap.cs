@@ -7,6 +7,15 @@ public class Trap : DangerousObject
     [SerializeField]
     private float force = 4f;
 
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            TakeDamage(collision);
+            //impact = true;
+            this.gameObject.SetActive(false);
+        }
+    }
     protected override void TakeDamage(Collider2D collision)
     {
         Character player = collision.gameObject.GetComponent<Character>();

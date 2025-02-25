@@ -167,15 +167,23 @@ public class DeathGroundState : ICharacterState
     public void Enter(Character character)
     {
         character.SetAnimation("Death");
+        if (character.isDie && character.isUsing)
+        {
+            character.isUsing = false;
+            CharacterManager.Instance.SwitchCharacter();
+        }
     }
-    public void Update(Character character) { }
+    public void Update(Character character) 
+    {
+        Updatelogic(character);
+    }
     public void Exit(Character character)
     {
         Debug.Log("Exit Deatd State");
     }
     public void Updatelogic(Character character)
     {
-
+        
     }
 }
 
@@ -200,7 +208,7 @@ public class DeathBubbleState : ICharacterState
 {
     public void Enter(Character character)
     {
-        character.SetAnimation("DeathBubbleState");
+        character.SetAnimation("DeathBubble");
     }
     public void Update(Character character) { }
     public void Exit(Character character)
