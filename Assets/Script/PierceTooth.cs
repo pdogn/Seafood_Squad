@@ -15,7 +15,7 @@ public class PierceTooth : Character
         if (IsAnimationFinished("Attack"))
         {
             attackStateComplete = true;
-            attackArea.gameObject.SetActive(false);
+            //attackArea.gameObject.SetActive(false);
         }
         else
         {

@@ -13,7 +13,6 @@ public class Trap : DangerousObject
         {
             TakeDamage(collision);
             //impact = true;
-            this.gameObject.SetActive(false);
         }
     }
     protected override void TakeDamage(Collider2D collision)

@@ -25,8 +25,14 @@ public class PinkStar : Character
         {
             //attackArea.gameObject.SetActive(true);
             timeAtk = delayAttack;
+            SpawnBullet();
             canAttack = false;
         }
+    }
+
+    public void SpawnBullet()
+    {
+        Instantiate(bulletPrefab, bulletPos.transform.position, Quaternion.identity);
     }
 
     public void DeadGround()
@@ -35,5 +41,16 @@ public class PinkStar : Character
 
     public void DeadSkeletonFish()
     {
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish)
+        {
+            Debug.Log("cham tuong");
+            this.rb.velocity = new Vector2(0, rb.velocity.y);
+            this.rb.isKinematic = false;
+            this.rb.bodyType = RigidbodyType2D.Static;
+        }
     }
 }

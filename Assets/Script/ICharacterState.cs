@@ -10,6 +10,7 @@ public interface ICharacterState
 {
     void Enter(Character character);
     void Update(Character character);
+    void Update2(Character character);
     void Exit(Character character);
 
     void Updatelogic(Character character);
@@ -28,6 +29,9 @@ public class IdleState : ICharacterState
         //character.UpdatePhysic();
         Updatelogic(character);
     }
+
+    public void Update2(Character character) { }
+
     public void Updatelogic(Character character)
     {
         if (character.isGrounded)
@@ -65,6 +69,9 @@ public class RunState : ICharacterState
         //character.UpdatePhysic();
         Updatelogic(character);
     }
+
+    public void Update2(Character character) { }
+
     public void Updatelogic(Character character)
     {
         if (character.isGrounded)
@@ -103,6 +110,8 @@ public class JumpState : ICharacterState
         Updatelogic(character);
     }
 
+    public void Update2(Character character) { }
+
     public void Updatelogic(Character character)
     {
         if (character.isGrounded)
@@ -130,6 +139,7 @@ public class AttackState : ICharacterState
     {
         Debug.Log("Enter Attack State");
         character.SetAnimation("Attack");
+        
         //character.Attack();
     }
     public void Update(Character character) 
@@ -138,6 +148,7 @@ public class AttackState : ICharacterState
         Updatelogic(character);
     }
 
+    public void Update2(Character character) { }
 
     public void Exit(Character character)
     {
@@ -175,8 +186,13 @@ public class DeathGroundState : ICharacterState
     }
     public void Update(Character character) 
     {
+    }
+
+    public void Update2(Character character)
+    {
         Updatelogic(character);
     }
+
     public void Exit(Character character)
     {
         Debug.Log("Exit Deatd State");
@@ -194,6 +210,11 @@ public class DeathSkeletonFishState : ICharacterState
         character.SetAnimation("DeathSkeletonFish");
     }
     public void Update(Character character) { }
+
+    public void Update2(Character character)
+    {
+        Updatelogic(character);
+    }
     public void Exit(Character character)
     {
         Debug.Log("Exit DeatdSkeletonFish State");
@@ -206,17 +227,48 @@ public class DeathSkeletonFishState : ICharacterState
 
 public class DeathBubbleState : ICharacterState
 {
+    bool trigger = true;
     public void Enter(Character character)
     {
         character.SetAnimation("DeathBubble");
+        //if (character.isUnderWater)
+        //{
+        //    character.rb.gravityScale = -0.7f;
+        //}
+        //else
+        //{
+        //    character.rb.gravityScale = 7f;
+        //}
     }
-    public void Update(Character character) { }
+    public void Update(Character character) 
+    {
+
+    }
+
+    public void Update2(Character character)
+    {
+        Updatelogic(character);
+    }
+
     public void Exit(Character character)
     {
         Debug.Log("Exit DeatdSkeletonFish State");
     }
     public void Updatelogic(Character character)
     {
-
+        if (!trigger) return;
+        if (character.isUnderWater)
+        {
+            if (character.IsAnimationFinished("DeathBubble"))
+            {
+                character.rb.gravityScale = -0.7f;
+                trigger = false;
+            }
+        }
+        else
+        {
+            character.rb.gravityScale = 7f;
+            trigger = false;
+        }
     }
 }

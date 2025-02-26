@@ -33,13 +33,17 @@ public class Character : MonoBehaviour
     [SerializeField] Vector2 SizeCheckBox;
 
     public bool canAttack;
-    protected float delayAttack = 0.5f;
+    [SerializeField]
+    protected float delayAttack = 0.8f;
     public float timeAtk = .5f;
 
     public bool isDie;
+    public bool isDieSkeletonFish;
     public bool isUsing;
 
     public bool attackStateComplete;
+
+    public bool isUnderWater;
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -60,15 +64,23 @@ public class Character : MonoBehaviour
     void InitState()
     {
         this.SetState(new IdleState());
+        canAttack = true;
     }
 
     private void Update()
     {
         dirX = Input.GetAxisRaw("Horizontal");
-        if (!isUsing || isDie) return;
-        currentState?.Update(this);
-        GroundCheck();
-        AttackCheck();
+        //currentState?.Update(this);
+        if (isUsing && !isDie)
+        {
+            currentState?.Update(this);
+            GroundCheck();
+            AttackCheck();
+        }
+        if (isDie)
+        {
+            currentState?.Update2(this);
+        }
     }
 
     private void LateUpdate()
@@ -148,7 +160,7 @@ public class Character : MonoBehaviour
 
     private void AttackCheck()
     {
-        if(timeAtk >= 0)
+        if (timeAtk >= 0)
         {
             timeAtk -= Time.deltaTime;
         }
@@ -158,9 +170,31 @@ public class Character : MonoBehaviour
         }
     }
 
+    //IEnumerator WaitAttack()
+    //{
+    //    canAttack = false;
+    //    yield return new WaitForSeconds(delayAttack);
+    //    canAttack = true;
+    //}
+    //public void WatingAttack()
+    //{
+    //    StartCoroutine(WaitAttack());
+    //}
+
     public bool IsAnimationFinished(string animationName)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1.0f;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish)
+        {
+            Debug.Log("cham tuong");
+            this.rb.velocity = new Vector2(0, rb.velocity.y);
+            this.rb.isKinematic = false;
+            this.rb.bodyType = RigidbodyType2D.Static;
+        }
     }
 }

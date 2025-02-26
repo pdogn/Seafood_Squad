@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class Teeth : DangerousObject
 {
-    [SerializeField]
     private Character player;
-    
+
+    private void Awake()
+    {
+        player = FindObjectOfType<PierceTooth>();
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("Ennal");
+        StartCoroutine(TeethAttackTime());
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player" && collision.gameObject != player.gameObject)
         {
             TakeDamage(collision);
             //impact = true;
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);
         }
     }
 
@@ -27,5 +37,11 @@ public class Teeth : DangerousObject
         other.rb.AddForce(forceDirection * 4f, ForceMode2D.Impulse);
         other.SetState(new DeathGroundState());
         //rb_other.AddForce(new Vector2(1f, 4f) ,ForceMode2D.Force);
+    }
+
+    IEnumerator TeethAttackTime()
+    {
+        yield return new WaitForSeconds(.2f);
+        this.gameObject.SetActive(false);
     }
 }
