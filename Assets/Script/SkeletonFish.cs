@@ -38,19 +38,18 @@ public class SkeletonFish : DangerousObject
     {
         Character other = collision.gameObject.GetComponent<Character>();
         other.isDie = true;
-        other.rb.isKinematic = true;
+        //other.rb.isKinematic = true;
         if (other.isDieSkeletonFish == false)
         {
+            other.rb.gravityScale = 0f;
             collision.transform.position = new Vector2(collision.transform.position.x, collision.transform.position.y + .5f);
-            other.isDieSkeletonFish = true;
-
+            //other.isDieSkeletonFish = true;
         }
 
-        Vector2 forceDirection = (collision.transform.position - transform.position).normalized;
-        forceDirection.y = 0f;
-        other.rb.velocity = Vector2.zero;
-        other.rb.AddForce(forceDirection * 40f, ForceMode2D.Force);
+        Vector2 forceDirection = this.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
+        other.rb.velocity += forceDirection * 15f;
 
+        other.isDieSkeletonFish = true;
         //float xX = collision.transform.position.x - transform.position.x;
         //Vector2 vel = this.gameObject.GetComponent<Rigidbody2D>().velocity;
         //if (xX > 0)

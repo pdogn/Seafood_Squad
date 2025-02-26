@@ -192,9 +192,15 @@ public class Character : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish)
         {
             Debug.Log("cham tuong");
-            this.rb.velocity = new Vector2(0, rb.velocity.y);
-            this.rb.isKinematic = false;
-            this.rb.bodyType = RigidbodyType2D.Static;
+            this.rb.velocity = Vector2.zero;
+            this.rb.isKinematic = true;
+            //this.rb.bodyType = RigidbodyType2D.Static;
+        }
+
+        if(collision.gameObject.CompareTag("Player") && isDie)
+        {
+            isDieSkeletonFish = false;
+            rb.gravityScale = 7f;
         }
     }
 }
