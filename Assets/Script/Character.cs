@@ -187,14 +187,14 @@ public class Character : MonoBehaviour
         return stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1.0f;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish)
-        {
-            Debug.Log("cham tuong");
-            this.rb.velocity = new Vector2(0, rb.velocity.y);
-            this.rb.isKinematic = false;
-            this.rb.bodyType = RigidbodyType2D.Static;
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish)
+    //    {
+    //        Debug.Log("cham tuong");
+    //        this.rb.velocity = new Vector2(0, rb.velocity.y);
+    //        this.rb.isKinematic = false;
+    //        this.rb.bodyType = RigidbodyType2D.Static;
+    //    }
+    //}
 }

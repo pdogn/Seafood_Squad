@@ -8,6 +8,8 @@ public class PinkStar : Character
     private Transform bulletPos;
     [SerializeField]
     private GameObject bulletPrefab;
+
+    public bool isStatic;
     public override void Attack()
     {
         Debug.Log("bắn bong bóng");
@@ -43,14 +45,40 @@ public class PinkStar : Character
     {
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish && !isStatic)
+    //    {
+    //        Debug.Log("cham tuong");
+    //        this.rb.velocity = Vector2.zero;
+    //        this.rb.bodyType = RigidbodyType2D.Static;
+    //        this.rb.gravityScale = 7f;
+    //        isStatic = true;
+    //    }
+    //    if (collision.gameObject.CompareTag("Player") && !isStatic)
+    //    {
+    //        isDieSkeletonFish = false;
+    //        this.rb.bodyType = RigidbodyType2D.Dynamic;
+    //        this.rb.gravityScale = 7f;
+    //    }
+    //}
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground") && isDieSkeletonFish)
+        if(collision.tag == "Ground" && isDieSkeletonFish && !isStatic)
         {
-            Debug.Log("cham tuong");
-            this.rb.velocity = new Vector2(0, rb.velocity.y);
-            this.rb.isKinematic = false;
+            Debug.Log("cham tuong pp");
+            this.rb.velocity = Vector2.zero;
             this.rb.bodyType = RigidbodyType2D.Static;
+            this.rb.gravityScale = 7f;
+            isStatic = true;
+        }
+        if (collision.tag == "Player" && !isStatic && isDie)
+        {
+            isDieSkeletonFish = false;
+            this.rb.bodyType = RigidbodyType2D.Dynamic;
+            this.rb.gravityScale = 7f;
+            SetState(new DeathGroundState());
         }
     }
 }
