@@ -44,12 +44,22 @@ public class Character : MonoBehaviour
     public bool attackStateComplete;
 
     public bool isUnderWater;
+
+    public float holdBtnTime = 0f;
+    bool isPressbtnJump;
+    public bool isHoldBtn;
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         rotate = gameObject.GetComponent<Transform>();
         InitState();
+
+        EventManager.Instance.LeftObject += MoveLeft;
+        EventManager.Instance.RightObject += MoveRight;
+        EventManager.Instance.Stopp += StopMove;
+        EventManager.Instance.JumpObject += Jumpp;
+        EventManager.Instance.DropObj += Dropp;
     }
 
     public void SetState(ICharacterState newState)
@@ -69,7 +79,7 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
+        //dirX = Input.GetAxisRaw("Horizontal");
         //currentState?.Update(this);
         if (isUsing && !isDie)
         {
@@ -81,6 +91,28 @@ public class Character : MonoBehaviour
         {
             currentState?.Update2(this);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!isUsing || isDie) return;
+        if (isPressbtnJump)
+        {
+            holdBtnTime += Time.fixedDeltaTime;
+            if(isGrounded)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+            if (holdBtnTime > 0.15f)
+            {
+                isHoldBtn = true;
+            }
+            else if (holdBtnTime < 0.15f)
+            {
+                isHoldBtn = false;
+            }
+        }
+        SmoothJump();
     }
 
     private void LateUpdate()
@@ -97,15 +129,15 @@ public class Character : MonoBehaviour
 
     public void UpdatePhysic()
     {
-        Flip();
+        //Flip();
 
         rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            //hasJumped = true;
-        }
+        //if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        //    //hasJumped = true;
+        //}
     }
 
     void Flip()
@@ -133,6 +165,61 @@ public class Character : MonoBehaviour
     public void Move()
     {
         Debug.Log(characterName + " is Running!");
+    }
+
+    private void MoveRight()
+    {
+        if (!isUsing) return;
+        dirX = 1;
+        this.rotate.localScale = new Vector2(-1, 1);
+        Debug.Log(characterName + " ffff!");
+    }
+    private void MoveLeft()
+    {
+        if (!isUsing) return;
+        dirX = -1;
+        this.rotate.localScale = new Vector2(1, 1);
+        Debug.Log(characterName + " ffff");
+    }
+    private void StopMove()
+    {
+        dirX = 0;
+        rb.velocity = new Vector2(0, rb.velocity.y);
+    }
+    private void Jumpp()
+    {
+        if (!isUsing) return;
+        if (isGrounded)
+        {
+            //rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            isPressbtnJump = true;
+            holdBtnTime = 0;
+            //rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
+    }
+    private void Dropp()
+    {
+        if (!isUsing) return;
+        isPressbtnJump = false;
+    }
+
+    void SmoothJump()
+    {
+        if (isGrounded)
+        {
+            holdBtnTime = 0;
+            return;
+        }
+        if (rb.velocity.y < 0)
+        {
+            //tang dan van toc roi xuong
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (7f - 1f) * Time.deltaTime;
+        }
+        else if (rb.velocity.y >= 0 && !isHoldBtn)
+        {
+            //tang dan van toc nhay len khi ko giu nut nhay
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (6f - 1f) * Time.deltaTime;
+        }
     }
 
     //Nhảy

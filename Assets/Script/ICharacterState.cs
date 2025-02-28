@@ -36,7 +36,7 @@ public class IdleState : ICharacterState
     {
         if (character.isGrounded)
         {
-            if (character.dirX != 0)
+            if (character.rb.velocity.x != 0)
             {
                 character.SetState(new RunState());
             }
@@ -76,7 +76,7 @@ public class RunState : ICharacterState
     {
         if (character.isGrounded)
         {
-            if (character.dirX == 0)
+            if (character.rb.velocity.x == 0)
             {
                 character.SetState(new IdleState());
             }

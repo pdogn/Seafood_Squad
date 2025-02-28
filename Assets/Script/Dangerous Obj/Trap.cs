@@ -20,7 +20,7 @@ public class Trap : DangerousObject
         Character player = collision.gameObject.GetComponent<Character>();
         if (player.isDie == false)
         {
-            player.dirX = 0;
+            //player.dirX = 0;
             player.isDie = true;
             player.rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
         }
