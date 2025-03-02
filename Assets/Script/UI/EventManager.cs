@@ -13,6 +13,7 @@ public class EventManager : MonoBehaviour
     public UnityAction JumpObject;
     public UnityAction DropObj;
     public UnityAction AttackObject;
+    public UnityAction SwitchObj;
     //public UnityAction pauseObject;
 
     void Awake()
@@ -70,6 +71,9 @@ public class EventManager : MonoBehaviour
 
     public void Switch()
     {
-
+        if (SwitchObj != null)
+        {
+            SwitchObj();
+        }
     }
 }

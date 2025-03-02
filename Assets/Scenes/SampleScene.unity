@@ -926,7 +926,7 @@ MonoBehaviour:
   rb: {fileID: 543162825}
   rotate: {fileID: 543162822}
   speed: 5
-  jumpForce: 20
+  jumpForce: 17
   dirX: 0
   groundCheck: {fileID: 77398667}
   isGrounded: 0
@@ -1311,7 +1311,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   rotate: {fileID: 0}
   speed: 5
-  jumpForce: 20
+  jumpForce: 17
   dirX: 0
   groundCheck: {fileID: 1216582347}
   isGrounded: 0
@@ -11813,7 +11813,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   rotate: {fileID: 0}
   speed: 5
-  jumpForce: 20
+  jumpForce: 17
   dirX: 0
   groundCheck: {fileID: 943140621}
   isGrounded: 0
