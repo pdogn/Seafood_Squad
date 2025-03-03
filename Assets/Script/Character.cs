@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
     [SerializeField]
     private float jumpForce = 7f;
     public float dirX;//
+    public float dirX2;//
     [SerializeField]
     private Transform groundCheck;
     public bool isGrounded;//
@@ -44,6 +45,8 @@ public class Character : MonoBehaviour
     public float holdBtnTime = 0f;
     public bool isPressbtnJump;
     public bool isHoldBtn;
+
+    public bool isControlWithUI;
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -125,7 +128,9 @@ public class Character : MonoBehaviour
 
     public void UpdatePhysic()
     {
-        //dirX = Input.GetAxisRaw("Horizontal");
+        if(!isControlWithUI)
+            dirX = Input.GetAxisRaw("Horizontal");
+        
         Flip();
         rb.velocity = new Vector2(speed * dirX, rb.velocity.y);
 

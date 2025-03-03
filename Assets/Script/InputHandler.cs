@@ -56,6 +56,7 @@ public class InputHandler : MonoBehaviour
     private void MoveRight()
     {
         if (!currentCharacter.isUsing) return;
+        currentCharacter.isControlWithUI = true;
         currentCharacter.dirX = 1;
         currentCharacter.rotate.localScale = new Vector2(-1, 1);
         Debug.Log(currentCharacter.characterName + " ffff!");
@@ -63,12 +64,14 @@ public class InputHandler : MonoBehaviour
     private void MoveLeft()
     {
         if (!currentCharacter.isUsing) return;
+        currentCharacter.isControlWithUI = true;
         currentCharacter.dirX = -1;
         currentCharacter.rotate.localScale = new Vector2(1, 1);
         Debug.Log(currentCharacter.characterName + " ffff");
     }
     private void StopMove()
     {
+        currentCharacter.isControlWithUI = false;
         currentCharacter.dirX = 0;
         currentCharacter.rb.velocity = new Vector2(0, currentCharacter.rb.velocity.y);
     }
